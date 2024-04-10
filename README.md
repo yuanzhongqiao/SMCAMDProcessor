@@ -1,89 +1,114 @@
-SMCAMDProcessor
-========
-[![Github release](https://img.shields.io/github/downloads/trulyspinach/SMCAMDProcessor/total.svg?color=pink)](https://github.com/trulyspinach/SMCAMDProcessor/releases)
-![Github release](https://img.shields.io/github/repo-size/trulyspinach/SMCAMDProcessor.svg?color=blue)
-[![Continuous Delivery](https://github.com/trulyspinach/SMCAMDProcessor/actions/workflows/main.yml/badge.svg)](https://github.com/trulyspinach/SMCAMDProcessor/actions/workflows/main.yml)
-
-XNU kernel extension for power management and monitoring of AMD processors.
-Also comes with a plugin for [VirtualSMC](https://github.com/acidanthera/VirtualSMC) to export readings to other applications.
-
-~~Please note that this release is at very initial stage of development, make sure you have a proper backup of your EFI folder and never run on any system that matters.~~
-This notice has been here since the very beginning of this repository. Although I still wouldn't consider it completely finished, many users, including me, have been running these kexts daily without any major issues. If it's your first time adding these kexts to your system, please ensure you have a backup of your EFI.
-
-Now you can also access the latest(and probably unstable) builds from [Github Action](https://github.com/trulyspinach/SMCAMDProcessor/actions).
-
-## Installation
-
-SMCAMDProcessor now comes in two separate binaries(kernel extensions):
-* `AMDRyzenCPUPowerManagement.kext` for all power management features. This kext is also required if you would like to use **AMD Power Gadget**.
-* `SMCAMDProcessor.kext` to publish readings to [VirtualSMC](https://github.com/acidanthera/VirtualSMC), which enables macOS applications like iStat to display sensor data. This kext depends on `AMDRyzenCPUPowerManagement.kext` to collect sensor data, thus must be loaded after.
-
-1. Download the kext(s) and application from [Release](https://github.com/trulyspinach/SMCAMDProcessor/releases) page.
-   * Optionally, you can instead download the latest(probably unstable) build from [Github Action](https://github.com/trulyspinach/SMCAMDProcessor/actions).
-3. Add `AMDRyzenCPUPowerManagement.kext` to kext folder of your bootloader.
-4. Edit your bootloader's config file to make sure the kext is enabled.
-5. If you're using [VirtualSMC](https://github.com/acidanthera/VirtualSMC) you can also load `SMCAMDProcessor.kext` to publish sensor data.
-6. Bootloaders like `OpenCore` will link each kext in the order they present in config file, so make sure `AMDRyzenCPUPowerManagement.kext` comes before `SMCAMDProcessor.kext` as it serves as a dependency.
-
-## Features
-* CPU power management for AMD Zen processors. 
-* Supports for reading of temperature, energy and frequency data on AMD Zen Processors.
-* Manual switching of processor speed.
-* PState editing.
-
-<img src="imgs/ani.gif" width="100%">
-
-## AMD Power Gadget
-<img src="imgs/all.png" width="80%">
-
-## Editing PState
-
-Since the release 0.3.1, you can now edit your CPU PState using AMD Power Tool.
-<img src="imgs/pe.png" width="60%">
-
-To access PState editor:
-1. Open AMD Power Tool
-2. Go to 'Speed' tab
-3. Click 'Advanced Options'
-
-## Fan Control
-
-Due to the amount of request an experimental feature for reading and overriding fan speed is out!
-<img src="imgs/fans.png" width="60%">
-
-You can access this menu from menu bar "Open -> SMC Fans" or the button in Power Tool.
-Currently only a limited amount of SMC controllers are supported.
-
-
-#### Safety Notes
-* Incorrect PState setting can potentially cause permanent damage to your computer hardware.
-* For safety concern, this function was limited to root user only. You can either launch AMD Power Gadget with root user or use `-amdpnopchk` to disable this check.
-
-
-<img src="imgs/iStats.png" width="40%">
-
-
-## Contribution
-#### If you like this project, please consider supporting it via:
-
-* Give it a star!
-* [Buy](https://ko-fi.com/trulyspinach) me a coffee.
-
-* Open an issue(English only) if you encountered any problem or have suggestions.
-* or if you're a coding person, feel free to submit a pull request. DM me on Discord if you have any code related questions.
-
-## Credits
-* [aluveitie](https://github.com/aluveitie) for various enhancements and fixes.
-* [mauricelos](https://github.com/mauricelos) for IT86XXE SMC chip driver.
-* [necross2](https://github.com/necross2) for adding support to temperature sensor offset.
-* [Shaneee](https://github.com/Shaneee) for the beautiful icon.
-* [mbarbierato](https://github.com/mbarbierato), [Lorys89](https://github.com/Lorys89) for NCT6799D SMC chip driver.
-* All contributors for various fixes and improvements.
-
-
-## Notes
-* I am still fairly new to macOS kernel development, this software project was initally a hobby project, **and it still is**, to get some reading on my newly built AMD hackintosh computer.
-
-* With that being said, please bear with some of the spaghetti and not-idiomatic codes. Any criticism is much welcomed :)
-
-[![stats](https://github-readme-stats.vercel.app/api?username=trulyspinach&theme=radical)](https://github.com/anuraghazra/github-readme-stats)
+<div class="Box-sc-g0xbh4-0 bJMeLZ js-snippet-clipboard-copy-unpositioned" data-hpc="true"><article class="markdown-body entry-content container-lg" itemprop="text"><div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">SMCAMD处理器</font></font></h1><a id="user-content-smcamdprocessor" class="anchor" aria-label="永久链接：SMCAMD处理器" href="#smcamdprocessor"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><a href="https://github.com/trulyspinach/SMCAMDProcessor/releases"><img src="https://camo.githubusercontent.com/94b42f83944f6c8b176535cb6f29ad92607097ff41068f22baeceba3f69b0a0f/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f646f776e6c6f6164732f7472756c797370696e6163682f534d43414d4450726f636573736f722f746f74616c2e7376673f636f6c6f723d70696e6b" alt="Github 发布" data-canonical-src="https://img.shields.io/github/downloads/trulyspinach/SMCAMDProcessor/total.svg?color=pink" style="max-width: 100%;"></a>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/2508f781df11316c82ca4323ea19d6ec3a1fdafa31c713e903dd0abfff28206a/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f7265706f2d73697a652f7472756c797370696e6163682f534d43414d4450726f636573736f722e7376673f636f6c6f723d626c7565"><img src="https://camo.githubusercontent.com/2508f781df11316c82ca4323ea19d6ec3a1fdafa31c713e903dd0abfff28206a/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f7265706f2d73697a652f7472756c797370696e6163682f534d43414d4450726f636573736f722e7376673f636f6c6f723d626c7565" alt="Github 发布" data-canonical-src="https://img.shields.io/github/repo-size/trulyspinach/SMCAMDProcessor.svg?color=blue" style="max-width: 100%;"></a>
+<a href="https://github.com/trulyspinach/SMCAMDProcessor/actions/workflows/main.yml"><img src="https://github.com/trulyspinach/SMCAMDProcessor/actions/workflows/main.yml/badge.svg" alt="持续交付" style="max-width: 100%;"></a></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">用于 AMD 处理器电源管理和监控的 XNU 内核扩展。还附带</font></font><a href="https://github.com/acidanthera/VirtualSMC"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">VirtualSMC</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">插件，可将读数导出到其他应用程序。</font></font></p>
+<p dir="auto"><del><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">请注意，此版本正处于开发的最初阶段，请确保您对 EFI 文件夹进行了正确的备份，并且切勿在任何重要的系统上运行。</font></font></del><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+该通知自本存储库一开始就已存在。尽管我仍然不认为它已经完全完成，但包括我在内的许多用户每天都在运行这些 kext，没有出现任何重大问题。如果这是您第一次将这些 kext 添加到系统中，请确保您有 EFI 的备份。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"></font><a href="https://github.com/trulyspinach/SMCAMDProcessor/actions"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">现在您还可以从Github Action</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">访问最新（可能不稳定）的版本</font><font style="vertical-align: inherit;">。</font></font></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">安装</font></font></h2><a id="user-content-installation" class="anchor" aria-label="永久链接：安装" href="#installation"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">SMCAMDProcessor 现在有两个独立的二进制文件（内核扩展）：</font></font></p>
+<ul dir="auto">
+<li><code>AMDRyzenCPUPowerManagement.kext</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">适用于所有电源管理功能。如果您想使用</font></font><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">AMD Power Gadget</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> ，也需要此 kext 。</font></font></li>
+<li><code>SMCAMDProcessor.kext</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">将读数发布到</font></font><a href="https://github.com/acidanthera/VirtualSMC"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">VirtualSMC</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，这使得 iStat 等 macOS 应用程序能够显示传感器数据。该kext依赖于</font></font><code>AMDRyzenCPUPowerManagement.kext</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">收集传感器数据，因此必须在之后加载。</font></font></li>
+</ul>
+<ol dir="auto">
+<li><font style="vertical-align: inherit;"></font><a href="https://github.com/trulyspinach/SMCAMDProcessor/releases"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">从发布</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">页面下载驱动程序和应用程序</font><font style="vertical-align: inherit;">。
+</font></font><ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">或者，您可以从</font></font><a href="https://github.com/trulyspinach/SMCAMDProcessor/actions"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Github Action</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">下载最新的（可能不稳定）版本。</font></font></li>
+</ul>
+</li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">添加</font></font><code>AMDRyzenCPUPowerManagement.kext</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">到引导加载程序的 kext 文件夹中。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">编辑引导加载程序的配置文件以确保启用 kext。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果您使用</font></font><a href="https://github.com/acidanthera/VirtualSMC"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">VirtualSMC，</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">您还可以加载</font></font><code>SMCAMDProcessor.kext</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">以发布传感器数据。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">像这样的引导加载程序</font></font><code>OpenCore</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">将按照它们在配置文件中出现的顺序链接每个 kext，因此请确保</font></font><code>AMDRyzenCPUPowerManagement.kext</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">位于前面</font></font><code>SMCAMDProcessor.kext</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，因为它充当依赖项。</font></font></li>
+</ol>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">特征</font></font></h2><a id="user-content-features" class="anchor" aria-label="永久链接：特点" href="#features"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">AMD Zen 处理器的 CPU 电源管理。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">支持读取 AMD Zen 处理器上的温度、能量和频率数据。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">手动切换处理器速度。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">P状态编辑。</font></font></li>
+</ul>
+<p dir="auto"><animated-image data-catalyst="" style="width: 100%;"><a target="_blank" rel="noopener noreferrer" href="/trulyspinach/SMCAMDProcessor/blob/master/imgs/ani.gif" data-target="animated-image.originalLink"><img src="/trulyspinach/SMCAMDProcessor/raw/master/imgs/ani.gif" style="max-width: 100%; display: inline-block;" data-target="animated-image.originalImage"></a>
+      <span class="AnimatedImagePlayer" data-target="animated-image.player" hidden="">
+        <a data-target="animated-image.replacedLink" class="AnimatedImagePlayer-images" href="https://github.com/trulyspinach/SMCAMDProcessor/blob/master/imgs/ani.gif" target="_blank">
+          
+        <span data-target="animated-image.imageContainer">
+            <img data-target="animated-image.replacedImage" alt="ani.gif" class="AnimatedImagePlayer-animatedImage" src="https://github.com/trulyspinach/SMCAMDProcessor/raw/master/imgs/ani.gif" style="display: block; opacity: 1;">
+          <canvas class="AnimatedImagePlayer-stillImage" aria-hidden="true" width="814" height="332"></canvas></span></a>
+        <button data-target="animated-image.imageButton" class="AnimatedImagePlayer-images" tabindex="-1" aria-label="Play ani.gif" hidden=""></button>
+        <span class="AnimatedImagePlayer-controls" data-target="animated-image.controls" hidden="">
+          <button data-target="animated-image.playButton" class="AnimatedImagePlayer-button" aria-label="Play ani.gif">
+            <svg aria-hidden="true" focusable="false" class="octicon icon-play" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 13.5427V2.45734C4 1.82607 4.69692 1.4435 5.2295 1.78241L13.9394 7.32507C14.4334 7.63943 14.4334 8.36057 13.9394 8.67493L5.2295 14.2176C4.69692 14.5565 4 14.1739 4 13.5427Z">
+            </path></svg>
+            <svg aria-hidden="true" focusable="false" class="octicon icon-pause" width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="2" width="3" height="12" rx="1"></rect>
+              <rect x="9" y="2" width="3" height="12" rx="1"></rect>
+            </svg>
+          </button>
+          <a data-target="animated-image.openButton" aria-label="Open ani.gif in new window" class="AnimatedImagePlayer-button" href="https://github.com/trulyspinach/SMCAMDProcessor/blob/master/imgs/ani.gif" target="_blank">
+            <svg aria-hidden="true" class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+              <path fill-rule="evenodd" d="M10.604 1h4.146a.25.25 0 01.25.25v4.146a.25.25 0 01-.427.177L13.03 4.03 9.28 7.78a.75.75 0 01-1.06-1.06l3.75-3.75-1.543-1.543A.25.25 0 0110.604 1zM3.75 2A1.75 1.75 0 002 3.75v8.5c0 .966.784 1.75 1.75 1.75h8.5A1.75 1.75 0 0014 12.25v-3.5a.75.75 0 00-1.5 0v3.5a.25.25 0 01-.25.25h-8.5a.25.25 0 01-.25-.25v-8.5a.25.25 0 01.25-.25h3.5a.75.75 0 000-1.5h-3.5z"></path>
+            </svg>
+          </a>
+        </span>
+      </span></animated-image></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">AMD 电源小工具</font></font></h2><a id="user-content-amd-power-gadget" class="anchor" aria-label="永久链接：AMD 电源小工具" href="#amd-power-gadget"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><a target="_blank" rel="noopener noreferrer" href="/trulyspinach/SMCAMDProcessor/blob/master/imgs/all.png"><img src="/trulyspinach/SMCAMDProcessor/raw/master/imgs/all.png" width="80%" style="max-width: 100%;"></a></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">编辑 P 状态</font></font></h2><a id="user-content-editing-pstate" class="anchor" aria-label="永久链接：编辑 PState" href="#editing-pstate"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">自 0.3.1 版本以来，您现在可以使用 AMD Power Tool 编辑 CPU PState。
+</font></font><a target="_blank" rel="noopener noreferrer" href="/trulyspinach/SMCAMDProcessor/blob/master/imgs/pe.png"><img src="/trulyspinach/SMCAMDProcessor/raw/master/imgs/pe.png" width="60%" style="max-width: 100%;"></a></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">要访问 PState 编辑器：</font></font></p>
+<ol dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">打开 AMD 电源工具</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">转到“速度”选项卡</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">点击“高级选项”</font></font></li>
+</ol>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">风扇控制</font></font></h2><a id="user-content-fan-control" class="anchor" aria-label="永久链接：风扇控制" href="#fan-control"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">由于请求量很大，用于读取和覆盖风扇速度的实验性功能已退出！
+</font></font><a target="_blank" rel="noopener noreferrer" href="/trulyspinach/SMCAMDProcessor/blob/master/imgs/fans.png"><img src="/trulyspinach/SMCAMDProcessor/raw/master/imgs/fans.png" width="60%" style="max-width: 100%;"></a></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">您可以从菜单栏“打开 -&gt; SMC 风扇”或 Power Tool 中的按钮访问此菜单。目前仅支持有限数量的 SMC 控制器。</font></font></p>
+<div class="markdown-heading" dir="auto"><h4 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">安全注意事项</font></font></h4><a id="user-content-safety-notes" class="anchor" aria-label="永久链接：安全注意事项" href="#safety-notes"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">不正确的 PState 设置可能会对您的计算机硬件造成永久性损坏。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">出于安全考虑，此功能仅限 root 用户使用。您可以使用 root 用户启动 AMD Power Gadget，也可以使用它</font></font><code>-amdpnopchk</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">来禁用此检查。</font></font></li>
+</ul>
+<p dir="auto"><a target="_blank" rel="noopener noreferrer" href="/trulyspinach/SMCAMDProcessor/blob/master/imgs/iStats.png"><img src="/trulyspinach/SMCAMDProcessor/raw/master/imgs/iStats.png" width="40%" style="max-width: 100%;"></a></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">贡献</font></font></h2><a id="user-content-contribution" class="anchor" aria-label="永久链接：贡献" href="#contribution"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<div class="markdown-heading" dir="auto"><h4 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果您喜欢这个项目，请考虑通过以下方式支持它：</font></font></h4><a id="user-content-if-you-like-this-project-please-consider-supporting-it-via" class="anchor" aria-label="永久链接：如果您喜欢这个项目，请考虑通过以下方式支持它：" href="#if-you-like-this-project-please-consider-supporting-it-via"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">给它一颗星！</font></font></p>
+</li>
+<li>
+<p dir="auto"><a href="https://ko-fi.com/trulyspinach" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">给我买</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">杯咖啡。</font></font></p>
+</li>
+<li>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果您遇到任何问题或有建议，请打开问题（仅限英文）。</font></font></p>
+</li>
+<li>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">或者，如果您是一名编码人员，请随时提交拉取请求。如果您有任何与代码相关的问题，请在 Discord 上私信我。</font></font></p>
+</li>
+</ul>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">制作人员</font></font></h2><a id="user-content-credits" class="anchor" aria-label="永久链接：学分" href="#credits"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li><a href="https://github.com/aluveitie"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">aluveitie</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">进行各种增强和修复。</font></font></li>
+<li><a href="https://github.com/mauricelos"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">mauricelos</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">用于 IT86XXE SMC 芯片驱动程序。</font></font></li>
+<li><a href="https://github.com/necross2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">necross2</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">添加对温度传感器偏移的支持。</font></font></li>
+<li><a href="https://github.com/Shaneee"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Shaneee 的</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">美丽图标。</font></font></li>
+<li><a href="https://github.com/mbarbierato"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">mbarbierato</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">、</font></font><a href="https://github.com/Lorys89"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Lorys89</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">用于NCT6799D SMC芯片驱动。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">所有修复和改进的贡献者。</font></font></li>
+</ul>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">笔记</font></font></h2><a id="user-content-notes" class="anchor" aria-label="永久链接：注释" href="#notes"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我对 macOS 内核开发还相当陌生，这个软件项目最初是一个业余爱好项目，现在</font></font><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">仍然是</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，在我新构建的 AMD hackintosh 计算机上阅读一些内容。</font></font></p>
+</li>
+<li>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">话虽如此，请忍受一些意大利面条和不惯用的代码。欢迎任何批评:)</font></font></p>
+</li>
+</ul>
+<p dir="auto"><a href="https://github.com/anuraghazra/github-readme-stats"><img src="https://camo.githubusercontent.com/d0a774aae59429759eccd647cdd5cc372bbaf5ee1bb87da7e51ef422b9ddf2e4/68747470733a2f2f6769746875622d726561646d652d73746174732e76657263656c2e6170702f6170693f757365726e616d653d7472756c797370696e616368267468656d653d7261646963616c" alt="统计数据" data-canonical-src="https://github-readme-stats.vercel.app/api?username=trulyspinach&amp;theme=radical" style="max-width: 100%;"></a></p>
+</article></div>
